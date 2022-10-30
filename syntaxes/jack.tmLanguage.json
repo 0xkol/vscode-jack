@@ -1,0 +1,281 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Jack",
+    "patterns": [
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#types"
+        },
+        {
+            "include": "#storage-types"
+        },
+        {
+            "include": "#storage-modifiers"
+        },
+        {
+            "include": "#class"
+        },
+        {
+            "include": "#functions"
+        },
+        {
+            "include": "#class-level-def"
+        },
+        {
+            "include": "#variables"
+        }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.control.jack",
+                    "match": "\\b(if|while|for|return|do|let|else)\\b"
+                },
+                {
+                    "name": "constant.language.jack",
+                    "match": "(this|null|true|false)(?!\\w)"
+                }
+            ]
+        },
+        "strings": {
+            "name": "string.quoted.double.jack",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.jack",
+                    "match": "\\\\."
+                }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                {
+                    "captures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.jack"
+                        }
+                    },
+                    "match": "/\\*\\*/",
+                    "name": "comment.block.empty.jack"
+                },
+                {
+                    "include": "text.html.javadoc"
+                },
+                {
+                    "include": "#comments-inline"
+                }
+            ]
+        },
+        "comments-inline": {
+            "patterns": [
+                {
+                    "begin": "/\\*",
+                    "captures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.jack"
+                        }
+                    },
+                    "end": "\\*/",
+                    "name": "comment.block.jack"
+                },
+                {
+                    "begin": "(^[ \\t]+)?(?=//)",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "punctuation.whitespace.comment.leading.jack"
+                        }
+                    },
+                    "end": "(?!\\G)",
+                    "patterns": [
+                        {
+                            "begin": "//",
+                            "beginCaptures": {
+                                "0": {
+                                    "name": "punctuation.definition.comment.jack"
+                                }
+                            },
+                            "end": "\\n",
+                            "name": "comment.line.double-slash.jack"
+                        }
+                    ]
+                }
+            ]
+        },
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.jack",
+                    "match": "\\d+"
+                }
+            ]
+        },
+        "variables": {
+            "patterns": [
+                {
+                    "begin": "\\s*(var)\\s+(int|boolean|char|[a-zA-Z_]\\w*)\\s+",
+                    "end": ";",
+                    "captures": {
+                        "1": {
+                            "name": "storage.type.jack"
+                        },
+                        "2": {
+                            "name": "storage.type.java.jack"
+                        }
+                    },
+                    "patterns": [
+                        {
+                            "include": "#var-def-list"
+                        }
+                    ]
+                },
+                {
+                    "name": "variable.name.jack",
+                    "match": "[a-zA-Z_]\\w*"
+                }
+            ]
+        },
+        "class": {
+            "patterns": [
+                {
+                    "match": "\\s*(class)\\s+([a-zA-Z_]\\w*)",
+                    "captures": {
+                        "1": {
+                            "name": "storage.modifier.jack"
+                        },
+                        "2": {
+                            "name": "storage.type.java.jack"
+                        }
+                    }
+                }
+            ]
+        },
+        "functions": {
+            "patterns": [
+                {
+                    "begin": "\\s*(constructor|method|function)\\s+(int|char|boolean|void|[a-zA-Z_]\\w*)\\s+([a-zA-Z_]\\w*)\\s*\\(",
+                    "end": "\\)",
+                    "captures": {
+                        "1": {
+                            "name": "storage.modifier.jack"
+                        },
+                        "2": {
+                            "name": "storage.type.java.jack"
+                        },
+                        "3": {
+                            "name": "entity.name.function.jack"
+                        }
+                    },
+                    "patterns": [
+                        {
+                            "include": "#param-list"
+                        },
+                        {
+                            "include": "#types"
+                        },
+                        {
+                            "match": "[a-zA-Z_]\\w*",
+                            "name": "storage.type.java.jack"
+                        }
+                    ]
+                },
+                {
+                    "match": "([a-zA-Z_]\\w*\\.)?([a-zA-Z_]\\w*)\\(",
+                    "captures": {
+                        "1": {
+                            "name": "variable.name.jack"
+                        },
+                        "2": {
+                            "name": "entity.name.function.jack"
+                        }
+                    }
+                }
+            ]
+        },
+        "class-level-def": {
+            "patterns": [
+                {
+                    "begin": "\\s*(field|static)\\s+(int|char|boolean|[a-zA-Z_]\\w*)\\s+",
+                    "end": ";",
+                    "captures": {
+                        "1": {
+                            "name": "storage.type.jack"
+                        },
+                        "2": {
+                            "name": "storage.type.java.jack"
+                        }
+                    },
+                    "patterns": [
+                        {
+                            "include": "#var-def-list"
+                        }
+                    ]
+                }
+            ]
+        },
+        "var-def-list": {
+            "patterns": [
+                {
+                    "match": "([a-zA-Z_]\\w*)\\s*(?=,|;)",
+                    "captures": {
+                        "1": {
+                            "name": "variable.name.jack"
+                        }
+                    }
+                }
+            ]
+        },
+        "param-list": {
+            "patterns": [
+                {
+                    "match": "\\s*(int|char|boolean|[a-zA-Z_]\\w*)\\s+([a-zA-Z_]\\w*)\\s*",
+                    "captures": {
+                        "1": {
+                            "name": "storage.type.java.jack"
+                        },
+                        "2": {
+                            "name": "variable.name.jack"
+                        }
+                    }
+                }
+            ]
+        },
+        "types": {
+            "patterns": [
+                {
+                    "match": "\\b(int|char|boolean|void)\\b",
+                    "name": "storage.type.java.jack"
+                }
+            ]
+        },
+        "storage-types": {
+            "patterns": [
+                {
+                    "match": "\\b(function|class|method|constructor|var)\\b",
+                    "name": "storage.type.jack"
+                }
+            ]
+        },
+        "storage-modifiers": {
+            "patterns": [
+                {
+                    "match": "\\b(static|field)\\b",
+                    "name": "storage.modifier.jack"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.jack"
+}

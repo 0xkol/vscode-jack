@@ -1,0 +1,26 @@
+{
+    "name": "jack",
+    "displayName": "Jack for VSCode",
+    "description": "Jack language syntax highlighter",
+    "version": "0.0.1",
+    "publisher": "moshek",
+    "engines": {
+        "vscode": "^1.26.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "jack",
+            "aliases": ["Jack", "jack"],
+            "extensions": [".jack"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "jack",
+            "scopeName": "source.jack",
+            "path": "./syntaxes/jack.tmLanguage.json"
+        }]
+    }
+}
